@@ -68,6 +68,35 @@
             background-size: 50px 50px; pointer-events: none; z-index: 1;
         }
 
+        /* --- NEW: Criss-Cross Cyber Lines --- */
+        .cyber-lines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .cyber-line { position: absolute; opacity: 0.4; }
+        
+        /* Cyan Lines */
+        .line-h1 { width: 100%; height: 2px; background: #00d4ff; box-shadow: 0 0 15px #00d4ff; top: -10%; left: 0; animation: scanH 8s linear infinite; }
+        .line-v1 { width: 2px; height: 100%; background: #00d4ff; box-shadow: 0 0 15px #00d4ff; top: 0; left: -10%; animation: scanV 12s linear infinite; animation-delay: 2s; }
+        .line-d1 { width: 150%; height: 2px; background: #00d4ff; box-shadow: 0 0 15px #00d4ff; top: 0; left: -25%; transform-origin: top left; animation: scanD1 15s linear infinite; }
+        
+        /* Magenta Lines */
+        .line-h2 { width: 100%; height: 2px; background: #ff00ff; box-shadow: 0 0 15px #ff00ff; top: -10%; left: 0; animation: scanH 10s linear infinite reverse; animation-delay: 4s; }
+        .line-v2 { width: 2px; height: 100%; background: #ff00ff; box-shadow: 0 0 15px #ff00ff; top: 0; right: -10%; animation: scanVRight 14s linear infinite; }
+        .line-d2 { width: 150%; height: 2px; background: #ff00ff; box-shadow: 0 0 15px #ff00ff; top: 0; right: -25%; transform-origin: top right; animation: scanD2 18s linear infinite; animation-delay: 5s; }
+
+        /* Hardware Accelerated Animation Keyframes */
+        @keyframes scanH { 0% { transform: translateY(0); } 100% { transform: translateY(120vh); } }
+        @keyframes scanV { 0% { transform: translateX(0); } 100% { transform: translateX(120vw); } }
+        @keyframes scanVRight { 0% { transform: translateX(0); } 100% { transform: translateX(-120vw); } }
+        @keyframes scanD1 { 0% { transform: rotate(45deg) translateY(-50vh); } 100% { transform: rotate(45deg) translateY(150vh); } }
+        @keyframes scanD2 { 0% { transform: rotate(-45deg) translateY(-50vh); } 100% { transform: rotate(-45deg) translateY(150vh); } }
+
+        /* Lower opacity on mobile to keep it from being distracting */
+        @media (max-width: 768px) {
+            .cyber-line { opacity: 0.2; }
+        }
+
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
 
         /* --- Scroll Reveal Animation --- */
@@ -196,6 +225,15 @@
     </div>
     <div class="cyber-grid"></div>
 
+    <div class="cyber-lines">
+        <div class="cyber-line line-h1"></div>
+        <div class="cyber-line line-v1"></div>
+        <div class="cyber-line line-d1"></div>
+        <div class="cyber-line line-h2"></div>
+        <div class="cyber-line line-v2"></div>
+        <div class="cyber-line line-d2"></div>
+    </div>
+
     <section class="hero" id="home">
         <div class="container reveal active">
             <div class="hero-content">
@@ -283,6 +321,12 @@
         </div>
     </section>
 
+    <footer style="text-align: center; padding: 2rem 0 3rem; position: relative; z-index: 10;">
+        <p style="font-family: 'Orbitron', monospace; font-size: 0.85rem; color: #777; letter-spacing: 2px; text-transform: uppercase;">
+            Managed and Coded by <span style="color: #00d4ff; font-weight: 700; text-shadow: 0 0 10px rgba(0,212,255,0.6);">PARTH SHRIKANT THAOKAR</span>
+        </p>
+    </footer>
+
     <script>
         // --- Custom Interactive Cursor Logic ---
         const cursorDot = document.getElementById('cursor-dot');
@@ -333,13 +377,6 @@
         }
         window.addEventListener("scroll", reveal);
         reveal(); // Trigger once on load
-  </script>
-
-    <footer style="text-align: center; padding: 2rem 0 3rem; position: relative; z-index: 10;">
-        <p style="font-family: 'Orbitron', monospace; font-size: 0.85rem; color: #777; letter-spacing: 2px; text-transform: uppercase;">
-            Managed and Coded by <span style="color: #00d4ff; font-weight: 700; text-shadow: 0 0 10px rgba(0,212,255,0.6);">PARTH SHRIKANT THAOKAR</span>
-        </p>
-    </footer>
-
+    </script>
 </body>
 </html>
