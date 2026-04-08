@@ -2,213 +2,223 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PraxCodez | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PraxCodez | Digital Creative & Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-dark: #03040b;
+            --bg-card: rgba(15, 20, 35, 0.6);
             --primary: #00d4ff;
             --secondary: #ff00ff;
+            --accent: #00ff88;
             --text-main: #ffffff;
             --text-muted: #8a9bb5;
-            --card-bg: rgba(15, 20, 35, 0.7);
+            --border: rgba(0, 212, 255, 0.15);
+            --border-hover: rgba(0, 212, 255, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        /* Disable custom cursor on mobile for performance */
-        @media (pointer: fine) {
-            * { cursor: none; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* --- Ambient Responsive Background --- */
-        .visual-container {
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* Cyber Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; 
+            z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background-color: var(--primary);
+            transform: translate(-50%, -50%) rotate(45deg);
+            box-shadow: 0 0 10px var(--primary);
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }
+        .cursor-outline {
+            width: 36px; height: 36px;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4), inset 0 0 15px rgba(255, 0, 255, 0.4);
+            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        border-radius 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: cyber-spin 4s linear infinite;
+        }
+        @keyframes cyber-spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @media (hover: none) and (pointer: coarse) { * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none !important; } }
+
+        /* Background Visuals */
+        .ambient-blobs {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
+            pointer-events: none; z-index: 0; overflow: hidden; filter: blur(70px);
         }
-        .grid {
-            width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        .blob {
-            position: absolute; width: 60vw; height: 60vw;
-            filter: blur(80px); opacity: 0.3; border-radius: 50%;
-            animation: move 20s infinite alternate;
-        }
-        .blob-1 { background: var(--primary); top: -10%; left: -10%; }
-        .blob-2 { background: var(--secondary); bottom: -10%; right: -10%; animation-delay: -5s; }
-
-        @keyframes move {
-            from { transform: translate(0, 0) scale(1); }
-            to { transform: translate(10%, 10%) scale(1.1); }
+        .blob { position: absolute; opacity: 0.4; animation: morph 15s ease-in-out infinite alternate; }
+        .blob-1 { background: linear-gradient(45deg, #00d4ff, #0044ff); width: 60vw; height: 60vw; top: -10%; left: -10%; }
+        .blob-2 { background: linear-gradient(45deg, #ff00ff, #ff0055); width: 55vw; height: 55vw; bottom: -10%; right: -10%; animation-delay: -5s; }
+        
+        .cyber-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; pointer-events: none; z-index: 1;
         }
 
-        /* --- Layout --- */
-        .container { 
-            width: 90%; max-width: 1200px; margin: 0 auto; 
-            position: relative; z-index: 10; padding: 20px 0;
-        }
+        /* Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 10; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 0; margin-bottom: 2rem;
-        }
-        .logo { font-family: 'Syncopate', sans-serif; font-weight: 700; color: #fff; text-decoration: none; font-size: 1.2rem; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 2rem 0; margin-bottom: 2rem; }
+        .logo { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary); }
 
-        /* --- Bento System --- */
-        .bento-grid {
-            display: grid; gap: 20px;
-            grid-template-columns: repeat(12, 1fr);
+        .bento-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(12, 1fr); margin-bottom: 1.5rem; }
+        .bento-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 2rem;
+            backdrop-filter: blur(20px); transition: all 0.3s ease; position: relative; overflow: hidden;
         }
+        .bento-card:hover { transform: translateY(-5px); border-color: var(--border-hover); box-shadow: 0 15px 30px rgba(0, 212, 255, 0.1); }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 20px; padding: 25px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, border 0.3s ease;
-        }
+        /* Components */
+        .badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; font-family: 'Orbitron', monospace; margin-bottom: 1rem; }
+        .badge-primary { background: rgba(0, 212, 255, 0.1); color: var(--primary); border: 1px solid rgba(0, 212, 255, 0.3); }
+        .tag-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+        .tag { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; color: #d0d0d0; border: 1px solid rgba(255,255,255,0.1); }
 
-        /* Desktop Positioning */
-        .hero-card { grid-column: span 8; }
-        .profile-card { grid-column: span 4; }
-        .project-card { grid-column: span 12; }
-
-        /* Mobile Adjustments */
-        @media (max-width: 850px) {
-            .hero-card, .profile-card { grid-column: span 12; }
-            .hero-title { font-size: 2.5rem !important; }
-        }
-
-        .hero-title {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(2rem, 5vw, 4rem);
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, #fff, var(--primary));
+        .hero-title { 
+            font-family: 'Syncopate', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); 
+            font-weight: 700; margin-bottom: 1rem; line-height: 1.2; 
+            background: linear-gradient(45deg, #ffffff, #00d4ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
+        
         .btn {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 12px 25px; border-radius: 50px;
-            text-decoration: none; font-weight: 600; font-size: 0.9rem;
-            transition: 0.3s; margin-top: 15px;
+            padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; 
+            transition: all 0.3s ease; border: none; display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: var(--primary); color: #000; }
-        .btn-primary:hover { box-shadow: 0 0 20px var(--primary); transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, #00d4ff, #0088ff); color: #000; box-shadow: 0 0 25px rgba(0, 212, 255, 0.4); }
+        .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
 
-        .tag {
-            font-size: 0.7rem; font-family: 'Orbitron';
-            background: rgba(255,255,255,0.05); padding: 5px 10px;
-            border-radius: 5px; color: var(--primary); border: 1px solid rgba(0,212,255,0.2);
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2); color: #fff; border-radius: 12px; cursor: none;
+        }
+        
+        @keyframes morph {
+            0% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; }
+            100% { border-radius: 30% 70% 40% 60% / 60% 70% 30% 40%; }
         }
 
-        /* --- Cursor Styles (PC Only) --- */
-        #cursor {
-            width: 20px; height: 20px; border: 2px solid var(--primary);
-            position: fixed; pointer-events: none; z-index: 999;
-            border-radius: 50%; transform: translate(-50%, -50%);
-            display: none;
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .hero-intro, .hero-profile, .stat-card { grid-column: span 12 !important; }
         }
-        @media (pointer: fine) { #cursor { display: block; } }
-
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
-    <div class="visual-container">
-        <div class="grid"></div>
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+    <div class="ambient-blobs"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+    <div class="cyber-grid"></div>
 
-    <div class="container">
+    <div class="container reveal active">
         <nav>
-            <a href="#" class="logo">PRAX<span>CODEZ</span></a>
-            <a href="mailto:sparththaokar07@gmail.com" class="tag" style="text-decoration: none;">STATUS: AVAILABLE</a>
+            <a href="#" class="logo">Prax<span>Codez</span></a>
+            <a href="mailto:sparththaokar07@gmail.com" class="btn btn-outline">Connect</a>
         </nav>
 
         <div class="bento-grid">
-            <div class="card hero-card">
-                <h1 class="hero-title">PARTH THAOKAR</h1>
-                <p style="color: var(--text-muted); font-size: 1rem;">Full-stack developer specializing in immersive dark-aesthetic interfaces and AI logic systems.</p>
-                <a href="#contact" class="btn btn-primary">INITIALIZE CONTACT <i class="fas fa-arrow-right"></i></a>
-            </div>
-
-            <div class="card profile-card" style="text-align: center;">
-                <div style="font-family: 'Orbitron'; font-size: 2rem; color: var(--primary);">15+</div>
-                <div style="font-size: 0.8rem; letter-spacing: 2px; color: var(--text-muted);">PROJECTS DEPLOYED</div>
-                <hr style="margin: 15px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
-                <div style="font-family: 'Orbitron'; font-size: 2rem; color: var(--secondary);">2+</div>
-                <div style="font-size: 0.8rem; letter-spacing: 2px; color: var(--text-muted);">YEARS EXPERIENCE</div>
-            </div>
-
-            <div class="card project-card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
-                    <h3 style="font-family: 'Orbitron';">TOURX AI</h3>
-                    <span class="tag">ACTIVE PROJECT</span>
+            <div class="bento-card hero-intro" style="grid-column: span 8;">
+                <div class="badge badge-primary">Developer • Designer • Creator</div>
+                <h1 class="hero-title">PraxCodez</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 600px;">Crafting high-immersion digital experiences. Bridging the gap between robust backend logic and striking dark-aesthetic visual design.</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="#contact" class="btn btn-primary">Start Project</a>
+                    <a href="#projects" class="btn btn-outline">Portfolio</a>
                 </div>
-                <p style="color: var(--text-muted); margin-bottom: 20px;">An AI-driven travel intelligence engine leveraging the Google Gemini API to calculate optimal routes and tourism costs across India.</p>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <span class="tag">GEMINI AI</span>
-                    <span class="tag">NODE.JS</span>
-                    <span class="tag">REACT</span>
+            </div>
+            <div class="bento-card hero-profile" style="grid-column: span 4; text-align: center;">
+                <i class="fas fa-terminal" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3 style="font-family: 'Orbitron';">Parth Thaokar</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Lead Developer</p>
+                <div class="tag-group" style="justify-content: center;">
+                    <span class="tag"><i class="fas fa-location-dot"></i> Nagpur, India</span>
                 </div>
             </div>
         </div>
 
-        <div class="card" id="contact" style="margin-top: 20px;">
-            <h2 style="font-family: 'Orbitron'; margin-bottom: 20px; text-align: center;">GET IN TOUCH</h2>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <a href="mailto:sparththaokar07@gmail.com" style="color: var(--primary); text-decoration: none; text-align: center; font-family: 'Orbitron';">
-                    <i class="fas fa-envelope"></i> sparththaokar07@gmail.com
-                </a>
-                <a href="tel:+919403852307" style="color: var(--text-main); text-decoration: none; text-align: center; font-size: 0.9rem;">
-                    <i class="fas fa-phone"></i> +91 9403852307
-                </a>
+        <div class="bento-grid" id="projects">
+            <div class="bento-card" style="grid-column: span 12;">
+                <div class="badge badge-primary">Featured Work</div>
+                <h2 style="font-family: 'Orbitron'; margin-bottom: 1rem;">TOURX by PraxCodez</h2>
+                <p style="color: var(--text-muted);">AI-driven travel logistics powered by Gemini API. Topographic distance analysis and verified regional pricing for Indian tourism.</p>
+                <div class="tag-group">
+                    <span class="tag">AI Integration</span><span class="tag">Next.js</span><span class="tag">API</span>
+                </div>
             </div>
         </div>
 
-        <footer style="padding: 40px 0; text-align: center; font-size: 0.7rem; color: #444; letter-spacing: 2px;">
-            <p>© 2026 PRAXCODEZ • ALL SYSTEMS OPERATIONAL</p>
-        </footer>
+        <div class="bento-card" id="contact" style="margin-top: 2rem;">
+            <h2 style="font-family: 'Orbitron'; text-align: center; margin-bottom: 2rem;">Initialize Connection</h2>
+            <form id="contactForm">
+                <div class="form-group"><input type="text" id="name" placeholder="Name" required></div>
+                <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
+                <div class="form-group"><textarea id="message" placeholder="Project Details"></textarea></div>
+                <div style="text-align: center;"><button type="submit" class="btn btn-primary">Send Signal</button></div>
+            </form>
+        </div>
     </div>
 
-    <script>
-        // PC Cursor Logic
-        const cursor = document.getElementById('cursor');
-        if(window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', e => {
-                cursor.style.top = e.clientY + 'px';
-                cursor.style.left = e.clientX + 'px';
-            });
+    <footer style="text-align: center; padding: 4rem 0; color: #555; font-size: 0.8rem;">
+        <p style="font-family: 'Orbitron'; letter-spacing: 2px; color: var(--primary);">PARTH SHRIKANT THAOKAR</p>
+        <p>© 2026 PraxCodez. All Systems Operational.</p>
+    </footer>
 
-            document.querySelectorAll('.card, .btn, a').forEach(item => {
-                item.addEventListener('mouseenter', () => {
-                    cursor.style.transform = 'translate(-50%, -50%) scale(2)';
-                    cursor.style.background = 'rgba(0, 212, 255, 0.1)';
-                });
-                item.addEventListener('mouseleave', () => {
-                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                    cursor.style.background = 'transparent';
-                });
+    <script>
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 400, fill: "forwards" });
+        });
+
+        const interactables = document.querySelectorAll('a, .btn, .bento-card, input, textarea, button');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                cursorOutline.style.borderColor = 'var(--accent)';
             });
-        }
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.borderColor = 'var(--secondary)';
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
